@@ -537,7 +537,8 @@ Once pre-trained, BERT can be **fine-tuned** on specific tasks:
 
 The model uses what it learned from pre-training to **adapt quickly and perform better** on limited labeled data.
 
-![9764beac-a786-4305-9a47-ec050b0ebef6_1060x308](https://github.com/user-attachments/assets/063c3751-5b1c-42e1-ac44-365105136592)
+
+![9764beac-a786-4305-9a47-ec050b0ebef6_1060x308](https://github.com/user-attachments/assets/01f9715b-2b8e-4eb0-ae6e-3c8be4d9d3f7)
 
 ---
 
@@ -639,7 +640,8 @@ Each “bank” gets a **unique embedding** reflecting its context 🧩.
 
 When visualized in 2D using **t-SNE**, these meanings form **separate clusters** 🌈 — showing how the model truly “understands” the difference!
 
-![e3ea13e1-2e9b-4030-955f-85751d9fca97_2454x2439](https://github.com/user-attachments/assets/149d47ec-b286-4cda-9b00-bbfa4543d3a4)
+![e3ea13e1-2e9b-4030-955f-85751d9fca97_2454x2439](https://github.com/user-attachments/assets/a7710f7f-0469-485b-954f-d627c432b642)
+
 
 As depicted above, the **static embedding models** — *GloVe* and *Word2Vec* 🧱 — produce **the same embedding** for different usages of a word ⚠️.
 
@@ -662,9 +664,6 @@ In fact, **contextualized embeddings** understand the **different meanings/sense
 They are highly **proficient at encoding**, turning **documents, paragraphs, or sentences** 📝 into **numerical vectors** 🔢 that capture both **meaning and context** 🌐.
 
 ---
-
-<aside>
-✅
 
 ## **The Big Takeaway**
 
