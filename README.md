@@ -727,7 +727,7 @@ To make vector search faster ⚡, we use **indexing** — a way to organize vect
 
 | File Name                          | Link |
 |------------------------------------|------|
-| Flat Indexing                       | [View](Flat%20Indexing) |
+| Flat Indexing                       | [View](1)%20FFlat%20FIndexing) |
 | Inverted File Index (IVF)           | [View](Inverted%20File%20Index%20%28IVF%29) |
 | Product Quantization (PQ)           | [View](Product%20Quantization%20%28PQ%29) |
 | Hierarchical Navigable Small World (HNSW) | [View](Hierarchical%20Navigable%20Small%20World%20%28HNSW%29) |
