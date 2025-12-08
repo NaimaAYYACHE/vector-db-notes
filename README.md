@@ -674,3 +674,55 @@ They are highly **proficient at encoding**, turning **documents, paragraphs, or 
 ✅ **Contextual embeddings** allow dynamic understanding — one word, multiple meanings depending on context.
 
 </aside>
+
+---
+
+# **🔍 What is ANN (Approximate Nearest Neighbors)?**
+
+**Approximate Nearest Neighbors (ANN)** is a method to find vectors that are *very close* to the query vector **(≈ similar 🤝)** without trying to be perfectly exact.
+
+Its goal is **speed ⚡** — giving you results that are **“good enough”** in **real time ⏱️** instead of waiting for a slow exact search.
+
+---
+
+## **🆚 ANN vs. KNN (Clear Difference)**
+
+### **📌 KNN — Exact Nearest Neighbors**
+
+- Finds the **true closest vectors 🎯**
+- Compares the query with **every vector 📂📂📂**
+- Always accurate **(100% ✅)**
+- But becomes **very slow on large datasets 🐢**
+
+### **📌 ANN — Approximate Nearest Neighbors**
+
+- Finds vectors that are **almost the closest ⭐**
+- Searches **faster** by avoiding unnecessary comparisons **(smart shortcuts 🧭)**
+- Perfect for **large-scale vector search 🚀**
+- Accuracy is very high but **not fully exact ~95–99% 🤏**
+  
+<img width="2220" height="994" alt="image-187" src="https://github.com/user-attachments/assets/50a44cd0-84fe-4fba-80ba-66d24c115357" />
+
+
+<aside>
+
+### **Summary**
+
+- **KNN = Exact 🎯 | Slow 🐢 | Checks Everything 📂**
+    
+    KNN focuses on **perfect precision 🎯**
+    
+
+- **ANN = Approximate ⭐ | Fast ⚡ | Smart Search 🧭**
+    
+    ANN focuses on **high speed ⚡** with **almost-perfect results ⭐**
+    
+</aside>
+
+---
+
+### 🧭 **Reducing the Search Space with Indexing**
+
+To make vector search faster ⚡, we use **indexing** — a way to organize vectors so we don’t have to compare the query with *every single one*. There are several indexing strategies
+
+---
