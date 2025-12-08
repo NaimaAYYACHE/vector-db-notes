@@ -725,6 +725,14 @@ Its goal is **speed ⚡** — giving you results that are **“good enough”** 
 
 To make vector search faster ⚡, we use **indexing** — a way to organize vectors so we don’t have to compare the query with *every single one*. There are several indexing strategies
 
+| File Name                          | Link |
+|------------------------------------|------|
+| Flat Indexing                       | [View](Flat%20Indexing) |
+| Inverted File Index (IVF)           | [View](Inverted%20File%20Index%20%28IVF%29) |
+| Product Quantization (PQ)           | [View](Product%20Quantization%20%28PQ%29) |
+| Hierarchical Navigable Small World (HNSW) | [View](Hierarchical%20Navigable%20Small%20World%20%28HNSW%29) |
+
+
 ---
 # 📚 **Using Vector Databases in LLMs**
 
