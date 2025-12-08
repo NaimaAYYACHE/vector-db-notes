@@ -726,3 +726,257 @@ Its goal is **speed ⚡** — giving you results that are **“good enough”** 
 To make vector search faster ⚡, we use **indexing** — a way to organize vectors so we don’t have to compare the query with *every single one*. There are several indexing strategies
 
 ---
+# 📚 **Using Vector Databases in LLMs**
+
+At this point, one interesting thing to learn is **how exactly Large Language Models (LLMs) take advantage of Vector Databases**.
+
+In my experience, the biggest conundrum many people face is:
+
+> Once we have trained our LLM, it will have some model weights for text generation. Where do vector databases fit in here? 🤔
+> 
+
+And this is a genuine question!
+
+<img width="1995" height="775" alt="image-242" src="https://github.com/user-attachments/assets/23725c83-7931-4eeb-936a-22e0c2379c42" />
+
+---
+
+## 🔹 **1. The Problem with Static LLMs**
+
+- An LLM is deployed after learning from a **static version of the corpus** it was trained on.
+
+<img width="2000" height="549" alt="image-243" src="https://github.com/user-attachments/assets/d42b1baa-3b52-4616-8ed0-3dc072f62fde" />
+
+- Example: If the model was trained on data until **31st Jan 2024**, and we use it a week later, it will **not know anything new**.
+
+<img width="2572" height="769" alt="image-244" src="https://github.com/user-attachments/assets/1fece1ea-0499-485e-82ca-9d88109e9b31" />
+
+💡 **Challenge:** Re-training the LLM every day is **impractical** and **expensive**.
+
+- Open-sourced LLMs also won’t know about **private datasets** unless retrained.
+
+<img width="2611" height="994" alt="image-245" src="https://github.com/user-attachments/assets/d6b838aa-38ea-4f34-9a9e-d19a98220b41" />
+
+- But do we really want our LLM to **know everything in the world**? No ❌
+
+✅ **Goal:** The LLM should **understand language structure** and **generate text reliably**.
+
+<img width="1000" height="284" alt="image-246" src="https://github.com/user-attachments/assets/58fd2a35-b1eb-450e-9e8d-e24f19a22153" />
+
+---
+
+## 🔹 **2. Providing New Information**
+
+One way to update the LLM without retraining is:
+
+- Include **all necessary information in the prompt**. ✏️
+- However, this only works for a **small amount of information**.
+
+<img width="1000" height="301" alt="image-248" src="https://github.com/user-attachments/assets/8b476b6a-9c50-4a50-9e23-28f152b198ef" />
+
+💡 *Reason:* LLMs are **auto-regressive** models:
+
+- They generate text **one token at a time**, depending on previous tokens.
+- **Token limits** restrict how much data we can include in a prompt.
+- Practical prompt size: **few thousand tokens**, but real-world data may be **millions of tokens**! 😱
+
+---
+
+## 🔹 **3. Enter Vector Databases**
+
+Instead of retraining every time new data emerges, we can **leverage vector databases** to dynamically update the model’s knowledge. ⚡
+
+### How it works:
+
+1. **Encode information as vectors** using an embedding model. 💾
+2. **Store vectors** in a vector database.
+    
+    <img width="2228" height="948" alt="image-249" src="https://github.com/user-attachments/assets/0fcf04f7-32f0-4822-9259-638f2874bbcc" />
+
+3. When the LLM needs information:
+    - Generate a **query vector** from the prompt.
+    - Perform **similarity search** in the vector database. 🔍
+4. Retrieve the **nearest neighbor vectors**.
+   
+<img width="2129" height="1649" alt="image-250" src="https://github.com/user-attachments/assets/149c2bfe-88ae-43b9-b9a8-c35093022720" />
+
+
+1. Include **context from those vectors** in the prompt.
+
+<img width="2000" height="1245" alt="image-253" src="https://github.com/user-attachments/assets/f9eb9e26-d62f-47b5-8754-7a275f6b2c42" />
+
+---
+
+## 🔹 **4. Why Indexing Matters**
+
+- Vector databases can have **millions of vectors**.
+- Comparing the query vector with **every vector** is too slow. ⏱️
+- **Indexing techniques** (like HNSW, PQ) allow **fast nearest neighbor search**.
+
+> The database retrieves relevant context for the query vector.
+> 
+
+---
+
+## 🔹 **5. Retrieval-Augmented Generation (RAG)**
+
+- Combine the **retrieved content** with the **original prompt**.
+- Feed it into the LLM for **enhanced text generation**. ✨
+
+**RAG =**
+
+| Term | Meaning |
+| --- | --- |
+| **Retrieval** | Accessing information from a source (e.g., vector database) 📂 |
+| **Augmented** | Enhancing text generation with additional context 🛠️ |
+| **Generation** | Producing new text using the LLM ✍️ |
+
+<img width="1855" height="1349" alt="image-254" src="https://github.com/user-attachments/assets/f1e0a9d8-9e4b-4659-8b0b-f29b5d0f57c8" />
+
+---
+
+## 🔹 **6. Reducing Hallucinations**
+
+- **Hallucinations**: When LLMs generate text **not grounded in reality** ❌
+- Using RAG:
+    - LLM incorporates **retrieved, reliable context**
+    - Reduces **false or misleading info**
+    - Produces **accurate, reliable, context-aware text** ✅
+
+> The more relevant the retrieved vectors, the better the LLM output.
+> 
+
+![What-are-LLM-Hallucinations_](https://github.com/user-attachments/assets/806902c8-ac13-439d-8782-ce0c56de8f12)
+
+---
+
+<aside>
+
+## **7. Summary**
+
+- LLMs alone are **static** and may lack **up-to-date knowledge**.
+- Providing all info in the **prompt** is limited by **token constraints**.
+- **Vector databases** encode and store information for **fast retrieval**.
+- **RAG** augments LLM generation with **retrieved context**, improving **accuracy** and reducing **hallucinations**.
+</aside>
+
+---
+
+✅ By using **vector databases + RAG**, LLMs can stay **dynamic, reliable, and contextually aware**, without retraining for every new piece of information.
+
+---
+
+# 📊 **How to Choose a Vector Database (VDB)**
+
+A *practical guide* to selecting the right vector database, based on your architecture, workload, and trade‑offs.
+
+---
+
+## 🔎 1. Key Considerations & Trade‑offs
+
+| **Factor** | **What to Think About** | **Trade‑Offs / Recommendations** |
+| --- | --- | --- |
+| **Prototype → Production** | - Embedded vs standalone- Ephemeral vs durable storage | - Use **in-memory libraries** for prototyping- For production, consider **disk-backed or distributed DBs** ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com)) |
+| **Workload Type** | - Write-heavy vs read-heavy vs hybrid | - **Write-heavy**: need async indexing/buffering- **Read-heavy**: pre-built indexes like HNSW or IVF ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com)) |
+| **Memory vs Disk** | - In-memory vs disk indexing- Sharding & scale | - In-memory = fastest, but limited- Disk-based (like DiskANN) = scalable but slower ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com)) |
+| **Deployment** | - Managed service vs self-hosted- In-process vs separate server | - Managed = low ops but less control- Self-hosted = more control, more work ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com)) |
+| **Tenant Model** | - Single-tenant vs multi-tenant | - Single-tenant = simple- Multi-tenant = cost-efficient but more complex ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com)) |
+| **Query Features** | - Metadata filtering- Hybrid search- Multi-vector support | - Index metadata for filtering- Choose DBs that support dense + sparse (hybrid) queries ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com)) |
+| **Indexing Strategy** | - ANN vs brute-force- Index types: HNSW, IVF, PQ, etc. | - ANN = speed + slight recall loss- Tune for your latency vs recall trade-off ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com)) |
+| **Operational Costs** | - Rebuilds, insert cost, filtering cost | - Avoid frequent full rebuilds- Use async writes, lazy deletes ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com)) |
+| **Decision Factors** | - Scale, latency, query features, ops budget | - Choose what *fits your architecture and constraints* ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com)) |
+
+---
+
+## 📈 2. Prototype → Production Strategy
+
+- 🧪 **Early stages**: Use an **embedded in-memory vector store** to prototype quickly.
+- 🔧 **Production**: Migrate to a **networked vector DB** (either self-hosted or fully managed) when scale and persistence matter.
+- 💾 **Durability**: In production, prefer DBs that support **disk-backed storage** so you do not lose data on shutdown/restart. ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com))
+
+---
+
+## ⚙️ 3. Match the Workload to the DB
+
+- **Write‑Heavy**: Buffer inserts or use append-only logs. Look for DBs that support **async rebuilds** or **separate write-read paths**. ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com))
+- **Read‑Heavy**: Pre-build ANN indexes (HNSW, IVF, etc.) to get very low latency queries. ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com))
+- **Hybrid Workloads**: Use a **static index** for your existing data + a **mutable “fresh” index** for recent writes.
+
+---
+
+## 💽 4. Memory vs Disk Considerations
+
+- **In-Memory**: Very fast, but requires lots of RAM.
+- **Disk-Based**: Slower, but scales to huge datasets; good for persistence and cost. ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com))
+- **Hybrid**: Use a mix — keep indexes in memory and bulk vectors on disk or memory-mapped files.
+
+---
+
+## 🏗️ 5. Deployment Models
+
+- **Managed Services**: Ideal for rapid deployment, low ops.
+- **Self‑Hosted/Open Source**: Maximum flexibility, but requires operational work.
+- **Embedded Libraries** (e.g. in-process): Great for experiments, single-app use cases. ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com))
+
+---
+
+## 👥 6. Tenant Architecture
+
+- **Single-tenant**: Simpler; great for one large index/use-case.
+- **Multi-tenant**: Use namespaces or collections to separate data, but designs become more complex. ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com))
+
+---
+
+## 🔍 7. Query & Search Features
+
+When choosing a VDB, check whether it supports:
+
+- **Metadata Filtering**: Important for narrowing down search by tags, time, or user. ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com))
+- **Hybrid Search** (Dense + Sparse): Combines semantic search with keyword or BM25-style filtering. ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com))
+- **Multi-Vector per Record**: Useful if a document has multiple embeddings (e.g. image + text). ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com))
+- **Specialized Queries**: Geo queries, faceted search, etc.
+
+---
+
+## 📐 8. Indexing Strategy vs Performance
+
+- **Choose your index type** (HNSW, IVF, PQ) based on *latency vs recall trade-off*. ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com))
+- **Avoid choosing just by brand name** — focus on how configurable the index parameters are.
+- **Rebuild cost**: If you plan to refresh the index often, understand how expensive rebuilding is for that index type.
+
+---
+
+## 💸 9. Operational Cost Trade‑offs
+
+- Expensive operations: Index rebuilds, bulk inserts, unindexed filters, large payloads. ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com))
+- Cheaper operations: Approximate queries, buffered writes, lazy deletes. ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com))
+- Design your VDB usage to minimize these costs over time.
+
+---
+
+## ✅ 10. Final Decision Guide
+
+Choose based on **your system’s architecture and constraints**, not just feature lists:
+
+- Data volume & scale
+- Latency & recall goals
+- Your team’s operational capacity
+- Query feature needs
+- Trade-offs you are comfortable with ([superlinked.com](https://superlinked.com/vectorhub/articles/choosing-vdb?utm_source=chatgpt.com))
+
+---
+
+## 📌 Bonus Tip
+
+If you’re unsure which VDB to pick:
+
+- Benchmark using **a sample of your actual data**
+- Try different index types (HNSW vs IVF)
+- Tune for your requirements: latency, recall & cost
+
+---
+
+**In summary**, the best VDB isn't “the fastest” or “the richest in features” — it's the one that *aligns with your use case*, your scale, and your team’s capacity.
+
+https://superlinked.com/vector-db-comparison
+---
